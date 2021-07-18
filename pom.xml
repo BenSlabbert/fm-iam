@@ -5,7 +5,7 @@
 
   <groupId>com.github.benslabbert.fm.iam</groupId>
   <artifactId>iam-parent</artifactId>
-  <version>${revision}</version>
+  <version>1.0.0-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <parent>
@@ -22,7 +22,6 @@
   <properties>
     <jdk.version>11</jdk.version>
     <release.version>11</release.version>
-    <revision>1.0.0-SNAPSHOT</revision>
     <micronaut.version>2.5.9</micronaut.version>
     <exec.mainClass>Application</exec.mainClass>
     <spotless.version>2.12.1</spotless.version>
@@ -40,6 +39,21 @@
 
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>flatten-maven-plugin</artifactId>
+        <version>1.2.7</version>
+        <executions>
+          <execution>
+            <goals>
+              <goal>flatten</goal>
+            </goals>
+          </execution>
+        </executions>
+        <configuration>
+          <!-- See usage on maven site from link above for details -->
+        </configuration>
+      </plugin>
       <plugin>
         <groupId>com.diffplug.spotless</groupId>
         <artifactId>spotless-maven-plugin</artifactId>

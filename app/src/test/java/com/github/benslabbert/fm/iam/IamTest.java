@@ -18,8 +18,10 @@ class IamTest {
     assertTrue(application.isRunning());
 
     var channel = ManagedChannelBuilder.forAddress("localhost", 50052).usePlaintext().build();
-    var request = com.github.benslabbert.fm.iam.IamRequest.newBuilder().setName("test").build();
-    var reply = com.github.benslabbert.fm.iam.IamServiceGrpc.newBlockingStub(channel).send(request);
+    var request =
+        com.github.benslabbert.fm.iam.proto.IamRequest.newBuilder().setName("test").build();
+    var reply =
+        com.github.benslabbert.fm.iam.proto.IamServiceGrpc.newBlockingStub(channel).send(request);
 
     assertNotNull(reply);
     assertNotNull(reply.getMessage());

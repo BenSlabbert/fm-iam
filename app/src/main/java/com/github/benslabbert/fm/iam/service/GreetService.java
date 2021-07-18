@@ -1,7 +1,7 @@
 package com.github.benslabbert.fm.iam.service;
 
-import com.github.benslabbert.fm.iam.IamReply;
-import com.github.benslabbert.fm.iam.IamRequest;
+import com.github.benslabbert.fm.iam.proto.IamReply;
+import com.github.benslabbert.fm.iam.proto.IamRequest;
 import javax.inject.Singleton;
 import lombok.extern.slf4j.Slf4j;
 
