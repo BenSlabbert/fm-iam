@@ -1,0 +1,10 @@
+language: java
+
+services:
+  - docker
+
+jdk:
+  - openjdk11
+
+script:
+  - mvn verify
