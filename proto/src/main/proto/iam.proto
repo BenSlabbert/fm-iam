@@ -1,0 +1,20 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.github.benslabbert.fm.iam";
+option java_outer_classname = "Iam";
+option objc_class_prefix = "HLW";
+
+package com.github.benslabbert.fm.iam;
+
+service IamService {
+  rpc send (IamRequest) returns (IamReply) {}
+}
+
+message IamRequest {
+  string name = 1;
+}
+
+message IamReply {
+  string message = 1;
+}
