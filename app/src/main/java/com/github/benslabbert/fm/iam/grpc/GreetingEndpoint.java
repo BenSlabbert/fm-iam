@@ -1,9 +1,9 @@
 package com.github.benslabbert.fm.iam.grpc;
 
-import com.github.benslabbert.fm.iam.proto.IamReply;
-import com.github.benslabbert.fm.iam.proto.IamRequest;
 import com.github.benslabbert.fm.iam.proto.IamServiceGrpc;
-import com.github.benslabbert.fm.iam.service.GreetService;
+import com.github.benslabbert.fm.iam.proto.LoginRequest;
+import com.github.benslabbert.fm.iam.proto.LoginResponse;
+import com.github.benslabbert.fm.iam.service.UserService;
 import io.grpc.stub.StreamObserver;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
@@ -12,11 +12,11 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class GreetingEndpoint extends IamServiceGrpc.IamServiceImplBase {
 
-  private final GreetService greetService;
+  private final UserService userService;
 
   @Override
-  public void send(IamRequest request, StreamObserver<IamReply> responseObserver) {
-    var reply = greetService.getReply(request);
+  public void login(LoginRequest request, StreamObserver<LoginResponse> responseObserver) {
+    var reply = userService.login(request);
     responseObserver.onNext(reply);
     responseObserver.onCompleted();
   }

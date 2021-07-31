@@ -8,13 +8,17 @@ option objc_class_prefix = "HLW";
 package com.github.benslabbert.fm.iam.proto;
 
 service IamService {
-  rpc send (IamRequest) returns (IamReply) {}
+  rpc login (LoginRequest) returns (LoginResponse) {}
 }
 
-message IamRequest {
+message LoginRequest {
   string name = 1;
+  string password = 2;
 }
 
-message IamReply {
-  string message = 1;
+message LoginResponse {
+  oneof login {
+    string token = 1;
+    string failure_reason = 2;
+  }
 }
