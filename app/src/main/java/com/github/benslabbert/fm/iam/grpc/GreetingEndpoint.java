@@ -5,11 +5,14 @@ import com.github.benslabbert.fm.iam.proto.LoginRequest;
 import com.github.benslabbert.fm.iam.proto.LoginResponse;
 import com.github.benslabbert.fm.iam.service.UserService;
 import io.grpc.stub.StreamObserver;
+import io.micronaut.scheduling.TaskExecutors;
+import io.micronaut.scheduling.annotation.ExecuteOn;
 import javax.inject.Singleton;
 import lombok.RequiredArgsConstructor;
 
 @Singleton
 @RequiredArgsConstructor
+@ExecuteOn(TaskExecutors.IO)
 public class GreetingEndpoint extends IamServiceGrpc.IamServiceImplBase {
 
   private final UserService userService;
