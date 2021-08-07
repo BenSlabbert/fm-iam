@@ -1,0 +1,15 @@
+syntax = "proto3";
+
+option java_multiple_files = true;
+option java_package = "com.github.benslabbert.fm.iam.proto.message.v1";
+option java_outer_classname = "Iam";
+option objc_class_prefix = "IAM";
+
+package com.github.benslabbert.fm.iam.proto.message.v1;
+
+import "common.proto";
+
+message V1UserMessage {
+  com.github.benslabbert.fm.iam.proto.common.UUID id = 1;
+  string name = 2;
+}

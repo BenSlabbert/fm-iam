@@ -1,8 +1,8 @@
 package com.github.benslabbert.fm.iam.grpc;
 
-import com.github.benslabbert.fm.iam.proto.IamServiceGrpc;
-import com.github.benslabbert.fm.iam.proto.LoginRequest;
-import com.github.benslabbert.fm.iam.proto.LoginResponse;
+import com.github.benslabbert.fm.iam.proto.service.v1.IamServiceGrpc;
+import com.github.benslabbert.fm.iam.proto.service.v1.LoginRequest;
+import com.github.benslabbert.fm.iam.proto.service.v1.LoginResponse;
 import com.github.benslabbert.fm.iam.service.UserService;
 import io.grpc.stub.StreamObserver;
 import io.micronaut.scheduling.TaskExecutors;
