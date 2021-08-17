@@ -1,8 +1,28 @@
 micronaut:
   application:
     name: iam
+  executors:
+    io:
+      type: fixed
+      n-threads: 5
+
 grpc:
   server:
     port: 50052
     keep-alive-time: 3h
     max-inbound-message-size: 1024
+
+datasources:
+  default:
+    url: jdbc:postgresql://localhost:5432/db
+    driverClassName: org.postgresql.Driver
+    username: user
+    password: "password"
+    dialect: postgres
+    maximum-pool-size: 1
+    connection-test-query: "select 1"
+
+flyway:
+  datasources:
+    default:
+      enabled: true

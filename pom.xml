@@ -25,6 +25,7 @@
     <micronaut.version>2.5.9</micronaut.version>
     <exec.mainClass>Application</exec.mainClass>
     <spotless.version>2.12.1</spotless.version>
+    <assertj.version>3.20.2</assertj.version>
   </properties>
 
   <repositories>

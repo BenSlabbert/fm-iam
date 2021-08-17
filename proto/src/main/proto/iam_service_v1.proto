@@ -9,6 +9,10 @@ package com.github.benslabbert.fm.iam.proto.service.v1;
 
 service IamService {
   rpc login (LoginRequest) returns (LoginResponse) {}
+  rpc logout (LogoutRequest) returns (LogoutResponse) {}
+  rpc create_account (CreateAccountRequest) returns (CreateAccountResponse) {}
+  rpc delete_account (DeleteAccountRequest) returns (DeleteAccountResponse) {}
+  rpc lock_account (LockAccountRequest) returns (LockAccountResponse) {}
 }
 
 message LoginRequest {
@@ -21,4 +25,36 @@ message LoginResponse {
     string token = 1;
     string failure_reason = 2;
   }
+}
+
+message LogoutRequest {
+
+}
+
+message LogoutResponse {
+
+}
+
+message CreateAccountRequest {
+
+}
+
+message CreateAccountResponse {
+
+}
+
+message DeleteAccountRequest {
+
+}
+
+message DeleteAccountResponse {
+
+}
+
+message LockAccountRequest {
+
+}
+
+message LockAccountResponse {
+
 }
