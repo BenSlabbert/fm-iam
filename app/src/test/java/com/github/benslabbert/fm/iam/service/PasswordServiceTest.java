@@ -12,6 +12,7 @@ class PasswordServiceTest {
   static Stream<Arguments> passwords() {
     return Stream.of(
         Arguments.of("password".toCharArray()),
+        Arguments.of("password123".toCharArray()),
         Arguments.of("@#%&{ASFPOashvafywgefkv".toCharArray()));
   }
 
