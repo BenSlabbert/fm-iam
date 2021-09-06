@@ -33,7 +33,6 @@
     </dependency>
 
     <!--sql-->
-
     <dependency>
       <groupId>org.postgresql</groupId>
       <artifactId>postgresql</artifactId>
@@ -75,6 +74,8 @@
       <artifactId>micronaut-grpc-runtime</artifactId>
       <scope>compile</scope>
     </dependency>
+
+    <!--extern-->
     <dependency>
       <groupId>javax.annotation</groupId>
       <artifactId>javax.annotation-api</artifactId>
@@ -84,6 +85,24 @@
       <groupId>ch.qos.logback</groupId>
       <artifactId>logback-classic</artifactId>
       <scope>runtime</scope>
+    </dependency>
+    <dependency>
+      <groupId>com.nimbusds</groupId>
+      <artifactId>nimbus-jose-jwt</artifactId>
+      <version>${nimbus-jose-jwt.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>redis.clients</groupId>
+      <artifactId>jedis</artifactId>
+      <version>${jedis.version}</version>
+      <scope>compile</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.apache.commons</groupId>
+      <artifactId>commons-pool2</artifactId>
+      <version>${commons-pool2.version}</version>
+      <scope>compile</scope>
     </dependency>
 
     <!--test-->
@@ -95,6 +114,11 @@
     <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.junit.jupiter</groupId>
+      <artifactId>junit-jupiter-params</artifactId>
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -113,6 +137,13 @@
       <version>${assertj.version}</version>
       <scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>${testcontainers.version}</version>
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>

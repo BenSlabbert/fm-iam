@@ -12,6 +12,8 @@ import com.github.benslabbert.fm.iam.proto.service.v1.LoginRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.LoginResponse;
 import com.github.benslabbert.fm.iam.proto.service.v1.LogoutRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.LogoutResponse;
+import com.github.benslabbert.fm.iam.proto.service.v1.RefreshRequest;
+import com.github.benslabbert.fm.iam.proto.service.v1.RefreshResponse;
 import com.github.benslabbert.fm.iam.service.UserService;
 import io.grpc.stub.StreamObserver;
 import io.micronaut.scheduling.TaskExecutors;
@@ -34,10 +36,17 @@ public class IamService extends IamServiceGrpc.IamServiceImplBase {
   }
 
   @Override
+  public void refresh(RefreshRequest request, StreamObserver<RefreshResponse> responseObserver) {
+    var ctx = CustomInterceptor.CONTEXT_KEY.get();
+    var reply = userService.refresh(ctx, request);
+    complete(responseObserver, reply);
+  }
+
+  @Override
   public void logout(LogoutRequest request, StreamObserver<LogoutResponse> responseObserver) {
     var ctx = CustomInterceptor.CONTEXT_KEY.get();
-    userService.logout(ctx, request);
-    complete(responseObserver, LogoutResponse.getDefaultInstance());
+    var reply = userService.logout(ctx, request);
+    complete(responseObserver, reply);
   }
 
   @Override
@@ -52,16 +61,16 @@ public class IamService extends IamServiceGrpc.IamServiceImplBase {
   public void deleteAccount(
       DeleteAccountRequest request, StreamObserver<DeleteAccountResponse> responseObserver) {
     var ctx = CustomInterceptor.CONTEXT_KEY.get();
-    userService.deleteAccount(ctx, request);
-    complete(responseObserver, DeleteAccountResponse.getDefaultInstance());
+    var resp = userService.deleteAccount(ctx, request);
+    complete(responseObserver, resp);
   }
 
   @Override
   public void lockAccount(
       LockAccountRequest request, StreamObserver<LockAccountResponse> responseObserver) {
     var ctx = CustomInterceptor.CONTEXT_KEY.get();
-    userService.lockAccount(ctx, request);
-    complete(responseObserver, LockAccountResponse.getDefaultInstance());
+    var resp = userService.lockAccount(ctx, request);
+    complete(responseObserver, resp);
   }
 
   private <T> void complete(StreamObserver<T> responseObserver, T msg) {

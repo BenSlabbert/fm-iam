@@ -2,18 +2,32 @@ package com.github.benslabbert.fm.iam;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import io.micronaut.runtime.EmbeddedApplication;
-import io.micronaut.test.extensions.junit5.annotation.MicronautTest;
-import javax.inject.Inject;
+import java.util.stream.Stream;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-@MicronautTest
-class IamTest {
+class IamTest extends ApplicationTestServices {
 
-  @Inject EmbeddedApplication<?> application;
+  private static TestApplicationWrapper testApplicationWrapper;
+
+  private static final PsqlContainer PSQL = newPsql();
+  private static final RedisContainer REDIS = newRedis();
+
+  @BeforeAll
+  static void beforeAll() {
+    Stream.of(PSQL, REDIS).parallel().forEach(StartableContainer::start);
+    testApplicationWrapper = startApplication(PSQL, REDIS);
+  }
+
+  @AfterAll
+  protected static void afterAll() {
+    testApplicationWrapper.getApplicationContext().stop();
+    Stream.of(PSQL, REDIS).parallel().forEach(StartableContainer::stop);
+  }
 
   @Test
   void testItWorks() {
-    assertTrue(application.isRunning());
+    assertTrue(testApplicationWrapper.getApplicationContext().isRunning());
   }
 }

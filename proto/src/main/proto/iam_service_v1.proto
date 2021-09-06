@@ -7,8 +7,12 @@ option objc_class_prefix = "IAM";
 
 package com.github.benslabbert.fm.iam.proto.service.v1;
 
+import "messages.proto";
+import "common.proto";
+
 service IamService {
   rpc login (LoginRequest) returns (LoginResponse) {}
+  rpc refresh (RefreshRequest) returns (RefreshResponse) {}
   rpc logout (LogoutRequest) returns (LogoutResponse) {}
   rpc create_account (CreateAccountRequest) returns (CreateAccountResponse) {}
   rpc delete_account (DeleteAccountRequest) returns (DeleteAccountResponse) {}
@@ -17,18 +21,26 @@ service IamService {
 
 message LoginRequest {
   string name = 1;
-  string password = 2;
+  bytes password = 2;
 }
 
 message LoginResponse {
-  oneof login {
-    string token = 1;
-    string failure_reason = 2;
-  }
+  string token = 1;
+  string refresh_token = 2;
+}
+
+message RefreshRequest {
+  com.github.benslabbert.fm.iam.proto.common.UUID user_id = 1;
+  string refresh_token = 2;
+}
+
+message RefreshResponse {
+  string token = 1;
+  string refresh_token = 2;
 }
 
 message LogoutRequest {
-
+  string token = 1;
 }
 
 message LogoutResponse {
@@ -36,15 +48,16 @@ message LogoutResponse {
 }
 
 message CreateAccountRequest {
-
+  string name = 1;
+  bytes password = 2;
 }
 
 message CreateAccountResponse {
-
+  com.github.benslabbert.fm.iam.proto.message.v1.UserMessage user = 1;
 }
 
 message DeleteAccountRequest {
-
+  string name = 1;
 }
 
 message DeleteAccountResponse {
@@ -52,7 +65,7 @@ message DeleteAccountResponse {
 }
 
 message LockAccountRequest {
-
+  string name = 1;
 }
 
 message LockAccountResponse {

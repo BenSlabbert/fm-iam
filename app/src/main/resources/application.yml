@@ -10,7 +10,7 @@ grpc:
   server:
     port: 50052
     keep-alive-time: 3h
-    max-inbound-message-size: 1024
+    max-inbound-message-size: 4096
 
 datasources:
   default:
@@ -19,8 +19,17 @@ datasources:
     username: user
     password: "password"
     dialect: postgres
-    maximum-pool-size: 1
+    maximum-pool-size: 2
     connection-test-query: "select 1"
+
+cache:
+  redis:
+    host: localhost
+    port: 6379
+    connectionTimeout: 500
+    pool:
+      maxSize: 4
+      idleSize: 2
 
 flyway:
   datasources:

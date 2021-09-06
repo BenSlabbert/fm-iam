@@ -9,7 +9,7 @@ package com.github.benslabbert.fm.iam.proto.message.v1;
 
 import "common.proto";
 
-message V1UserMessage {
+message UserMessage {
   com.github.benslabbert.fm.iam.proto.common.UUID id = 1;
   string name = 2;
 }

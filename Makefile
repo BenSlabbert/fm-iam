@@ -1,9 +1,18 @@
 #!make
 
-.PHONY: install fmt clean updateVersion
+.PHONY: install test verify compile fmt clean updateVersion
 
 install: fmt
 	@ mvn install
+
+test: fmt
+	@ mvn test
+
+verify: fmt
+	@ mvn verify
+
+compile: fmt
+	@ mvn compile
 
 fmt:
 	@ mvn spotless:apply

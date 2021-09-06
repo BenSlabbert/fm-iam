@@ -26,6 +26,10 @@
     <exec.mainClass>Application</exec.mainClass>
     <spotless.version>2.12.1</spotless.version>
     <assertj.version>3.20.2</assertj.version>
+    <nimbus-jose-jwt.version>9.13</nimbus-jose-jwt.version>
+    <jedis.version>3.7.0</jedis.version>
+    <commons-pool2.version>2.11.1</commons-pool2.version>
+    <testcontainers.version>1.16.0</testcontainers.version>
   </properties>
 
   <repositories>
