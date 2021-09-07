@@ -11,6 +11,7 @@ test: fmt
 
 verify: fmt
 	@ mvn verify
+	@ docker build . -t iam
 
 compile: fmt
 	@ mvn compile
