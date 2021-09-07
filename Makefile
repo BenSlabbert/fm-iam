@@ -4,6 +4,7 @@
 
 install: fmt
 	@ mvn install
+	@ docker build . -t iam
 
 test: fmt
 	@ mvn test
