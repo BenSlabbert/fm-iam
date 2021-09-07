@@ -1,3 +1,10 @@
+dist: bionic
+
+addons:
+  apt:
+    packages:
+      - make
+
 language: java
 
 services:
@@ -7,7 +14,7 @@ jdk:
   - openjdk11
 
 script:
-  - mvn verify
+  - make
 
 cache:
   directories:
