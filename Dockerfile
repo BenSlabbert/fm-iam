@@ -30,7 +30,7 @@ ENV JAVA_MINIMAL=/opt/jre
 ENV PATH="$PATH:$JAVA_MINIMAL/bin"
 
 COPY --from=packager "$JAVA_MINIMAL" "$JAVA_MINIMAL"
-COPY "app/target/app-1.0.0-SNAPSHOT.jar" "/app.jar"
+COPY "app/target/app.jar" "/app.jar"
 
 EXPOSE 8080
 CMD [ "-jar", "/app.jar" ]
