@@ -8,13 +8,13 @@ micronaut:
 
 grpc:
   server:
-    port: 50052
+    port: 50500
     keep-alive-time: 3h
     max-inbound-message-size: 4096
 
 datasources:
   default:
-    url: jdbc:postgresql://localhost:5432/db
+    url: jdbc:postgresql://localhost:5432/iam
     driverClassName: org.postgresql.Driver
     username: user
     password: "password"

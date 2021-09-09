@@ -2,6 +2,7 @@ package com.github.benslabbert.fm.iam.service;
 
 import com.github.benslabbert.fm.iam.config.RedisCacheConfig;
 import java.nio.charset.StandardCharsets;
+import java.time.Duration;
 import java.util.Optional;
 import javax.annotation.PreDestroy;
 import javax.inject.Singleton;
@@ -15,6 +16,8 @@ import redis.clients.jedis.params.SetParams;
 public class CacheService {
 
   public static final String REFRESH_PREFIX = "refresh-";
+
+  private static final long EXP = Duration.ofMinutes(10L).toMillis();
 
   private final JedisPool pool;
 
@@ -39,7 +42,7 @@ public class CacheService {
 
   public void put(String key, byte[] value) {
     try (var jedis = pool.getResource()) {
-      jedis.set(key.getBytes(StandardCharsets.UTF_8), value, SetParams.setParams().ex(10L));
+      jedis.set(key.getBytes(StandardCharsets.UTF_8), value, SetParams.setParams().ex(EXP));
     }
   }
 

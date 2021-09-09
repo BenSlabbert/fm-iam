@@ -69,6 +69,7 @@ public class UserService {
     }
 
     var userId = tokenService.getUserIdFromRefreshToken(request.getRefreshToken());
+    // todo maybe this should be in the db...
     var refreshToken = cacheService.get(CacheService.REFRESH_PREFIX + userId);
 
     if (refreshToken.isEmpty()) {
