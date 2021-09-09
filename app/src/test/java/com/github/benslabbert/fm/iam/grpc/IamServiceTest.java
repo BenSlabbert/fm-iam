@@ -8,7 +8,6 @@ import com.github.benslabbert.fm.iam.RedisContainer;
 import com.github.benslabbert.fm.iam.StartableContainer;
 import com.github.benslabbert.fm.iam.TestApplicationWrapper;
 import com.github.benslabbert.fm.iam.dao.repo.UserRepo;
-import com.github.benslabbert.fm.iam.proto.common.UUID;
 import com.github.benslabbert.fm.iam.proto.service.v1.IamServiceGrpc;
 import com.github.benslabbert.fm.iam.proto.service.v1.LoginRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.LogoutRequest;
@@ -77,10 +76,7 @@ class IamServiceTest extends ApplicationTestServices {
 
     var refreshResponse =
         stub.refresh(
-            RefreshRequest.newBuilder()
-                .setUserId(UUID.newBuilder().setValue(userId).build())
-                .setRefreshToken(loginResponse.getRefreshToken())
-                .build());
+            RefreshRequest.newBuilder().setRefreshToken(loginResponse.getRefreshToken()).build());
     assertThat(refreshResponse).isNotNull();
     assertThat(refreshResponse.getToken()).isNotNull();
     assertThat(refreshResponse.getRefreshToken()).isNotNull();

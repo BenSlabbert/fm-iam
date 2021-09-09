@@ -30,8 +30,7 @@ message LoginResponse {
 }
 
 message RefreshRequest {
-  com.github.benslabbert.fm.iam.proto.common.UUID user_id = 1;
-  string refresh_token = 2;
+  string refresh_token = 1;
 }
 
 message RefreshResponse {

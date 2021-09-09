@@ -33,4 +33,11 @@ class TokenServiceTest {
     var isValid = service.verifyRefresh(token);
     assertTrue(isValid);
   }
+
+  @Test
+  void getUserIdFromRefreshToken() {
+    var token = service.createRefresh("id");
+    var userId = service.getUserIdFromRefreshToken(token);
+    assertEquals("id", userId);
+  }
 }

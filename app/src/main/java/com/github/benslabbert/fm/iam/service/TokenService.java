@@ -90,6 +90,12 @@ public class TokenService {
     return obj.getJWTClaimsSet().getExpirationTime().before(Date.from(Instant.now()));
   }
 
+  @SneakyThrows
+  public String getUserIdFromRefreshToken(String refreshToken) {
+    var obj = SignedJWT.parse(refreshToken);
+    return obj.getJWTClaimsSet().getStringClaim(REFRESH_CLAIM);
+  }
+
   private JWTClaimsSet createClaim(String claim, String payload, long expiration) {
     return new JWTClaimsSet.Builder()
         .notBeforeTime(Date.from(Instant.now()))

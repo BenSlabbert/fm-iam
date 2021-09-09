@@ -20,6 +20,7 @@ import com.github.benslabbert.fm.iam.proto.service.v1.LogoutRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.LogoutResponse;
 import com.github.benslabbert.fm.iam.proto.service.v1.RefreshRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.RefreshResponse;
+import io.micronaut.core.util.StringUtils;
 import java.nio.charset.StandardCharsets;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
@@ -63,10 +64,12 @@ public class UserService {
   }
 
   public RefreshResponse refresh(RequestContext ctx, RefreshRequest request) {
-    log.trace("{} refresh user session {}", ctx.requestId, request.getUserId().getValue());
+    if (StringUtils.isEmpty(request.getRefreshToken())) {
+      throw new SessionExpiredException();
+    }
 
-    var refreshToken =
-        cacheService.get(CacheService.REFRESH_PREFIX + request.getUserId().getValue());
+    var userId = tokenService.getUserIdFromRefreshToken(request.getRefreshToken());
+    var refreshToken = cacheService.get(CacheService.REFRESH_PREFIX + userId);
 
     if (refreshToken.isEmpty()) {
       log.trace("{} no token found", ctx.requestId);
@@ -84,8 +87,13 @@ public class UserService {
       throw new SessionExpiredException();
     }
 
-    var newToken = tokenService.create(request.getUserId().getValue());
-    var newRefreshToken = createNewRefreshToken(request.getUserId().getValue());
+    if (!token.equals(request.getRefreshToken())) {
+      log.trace("{} incorrect refresh token provided", ctx.requestId);
+      throw new SessionExpiredException();
+    }
+
+    var newToken = tokenService.create(userId);
+    var newRefreshToken = createNewRefreshToken(userId);
     return RefreshResponse.newBuilder().setToken(newToken).setRefreshToken(newRefreshToken).build();
   }
 
