@@ -13,19 +13,25 @@ services:
   - docker
 
 script:
+  - export ZULU_JDK="zulu17.28.13-ca-jdk17.0.0-linux_x64"
+  - export APACHE_MAVEN_MAJOR="3"
+  - export APACHE_MAVEN_MINOR="8"
+  - export APACHE_MAVEN_PATCH="2"
+  - export APACHE_MAVEN_VERSION="$APACHE_MAVEN_MAJOR.$APACHE_MAVEN_MINOR.$APACHE_MAVEN_PATCH"
+  - export APACHE_MAVEN="apache-maven-$APACHE_MAVEN_VERSION"
+  - export APACHE_MAVEN_BIN="$APACHE_MAVEN-bin"
   - echo "start script"
   - WORK_DIR=$(pwd)
   - cd /tmp
-  - curl https://cdn.azul.com/zulu/bin/zulu17.28.13-ca-jdk17.0.0-linux_x64.tar.gz -o zulu17.28.13-ca-jdk17.0.0-linux_x64.tar.gz
-  - gunzip zulu17.28.13-ca-jdk17.0.0-linux_x64.tar.gz
-  - tar -xvf zulu17.28.13-ca-jdk17.0.0-linux_x64.tar
-  - export PATH="$PATH:/tmp/zulu17.28.13-ca-jdk17.0.0-linux_x64/bin"
-  - java --version
-  - export JAVA_HOME="/tmp/zulu17.28.13-ca-jdk17.0.0-linux_x64"
-  - curl https://dlcdn.apache.org/maven/maven-3/3.8.2/binaries/apache-maven-3.8.2-bin.tar.gz -o apache-maven-3.8.2-bin.tar.gz
-  - gunzip apache-maven-3.8.2-bin.tar.gz
-  - tar -xvf apache-maven-3.8.2-bin.tar
-  - export PATH="$PATH:/tmp/apache-maven-3.8.2/bin"
+  - curl https://cdn.azul.com/zulu/bin/$ZULU_JDK.tar.gz -o $ZULU_JDK.tar.gz
+  - gunzip $ZULU_JDK.tar.gz
+  - tar -xvf $ZULU_JDK.tar
+  - export PATH="$PATH:/tmp/$ZULU_JDK/bin"
+  - export JAVA_HOME="/tmp/$ZULU_JDK"
+  - curl https://dlcdn.apache.org/maven/maven-$APACHE_MAVEN_MAJOR/$APACHE_MAVEN_VERSION/binaries/$APACHE_MAVEN_BIN.tar.gz -o $APACHE_MAVEN_BIN.tar.gz
+  - gunzip $APACHE_MAVEN_BIN.tar.gz
+  - tar -xvf $APACHE_MAVEN_BIN.tar
+  - export PATH="$PATH:/tmp/$APACHE_MAVEN/bin"
   - mvn --version
   - cd "$WORK_DIR"
   - echo "running"
