@@ -2,7 +2,6 @@ package com.github.benslabbert.fm.iam.service;
 
 import com.github.benslabbert.fm.iam.dao.entity.User;
 import com.github.benslabbert.fm.iam.dao.repo.UserRepo;
-import com.github.benslabbert.fm.iam.dto.Token;
 import com.github.benslabbert.fm.iam.exception.BadCredentialsException;
 import com.github.benslabbert.fm.iam.exception.NotFoundException;
 import com.github.benslabbert.fm.iam.exception.SessionExpiredException;
@@ -25,7 +24,6 @@ import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidResponse;
 import io.micronaut.core.util.StringUtils;
 import java.nio.charset.StandardCharsets;
-import java.util.Optional;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
