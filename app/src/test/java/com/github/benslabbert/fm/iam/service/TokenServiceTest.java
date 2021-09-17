@@ -18,7 +18,7 @@ class TokenServiceTest {
   @Test
   void token() {
     var token = service.create("id");
-    var t = service.verify(token);
+    var t = service.parse(token);
     assertTrue(t.isPresent());
     assertEquals("id", t.get().getUserId());
 
@@ -30,7 +30,7 @@ class TokenServiceTest {
   @Test
   void refresh() {
     var token = service.createRefresh("id");
-    var isValid = service.verifyRefresh(token);
+    var isValid = service.isValid(token);
     assertTrue(isValid);
   }
 

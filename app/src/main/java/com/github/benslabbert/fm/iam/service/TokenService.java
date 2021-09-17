@@ -56,7 +56,7 @@ public class TokenService {
   }
 
   @SneakyThrows
-  public Optional<Token> verify(String token) {
+  public Optional<Token> parse(String token) {
     var obj = SignedJWT.parse(token);
     var verifier = new MACVerifier(SECRET);
 
@@ -78,7 +78,7 @@ public class TokenService {
   }
 
   @SneakyThrows
-  public boolean verifyRefresh(String token) {
+  public boolean isValid(String token) {
     var obj = SignedJWT.parse(token);
     var verifier = new MACVerifier(SECRET);
     return obj.verify(verifier);

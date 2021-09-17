@@ -2,6 +2,7 @@ package com.github.benslabbert.fm.iam.service;
 
 import com.github.benslabbert.fm.iam.dao.entity.User;
 import com.github.benslabbert.fm.iam.dao.repo.UserRepo;
+import com.github.benslabbert.fm.iam.dto.Token;
 import com.github.benslabbert.fm.iam.exception.BadCredentialsException;
 import com.github.benslabbert.fm.iam.exception.NotFoundException;
 import com.github.benslabbert.fm.iam.exception.SessionExpiredException;
@@ -20,8 +21,11 @@ import com.github.benslabbert.fm.iam.proto.service.v1.LogoutRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.LogoutResponse;
 import com.github.benslabbert.fm.iam.proto.service.v1.RefreshRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.RefreshResponse;
+import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidRequest;
+import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidResponse;
 import io.micronaut.core.util.StringUtils;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -78,7 +82,7 @@ public class UserService {
     }
 
     var token = new String(refreshToken.get());
-    if (!tokenService.verifyRefresh(token)) {
+    if (!tokenService.isValid(token)) {
       log.trace("{} invalid token", ctx.requestId);
       throw new SessionExpiredException();
     }
@@ -172,5 +176,16 @@ public class UserService {
     cacheService.put(
         CacheService.REFRESH_PREFIX + userId, newToken.getBytes(StandardCharsets.UTF_8));
     return newToken;
+  }
+
+  public TokenValidResponse tokenValid(RequestContext ctx, TokenValidRequest request) {
+    log.trace("{} check token {}", ctx.requestId, request);
+
+    if (!tokenService.isValid(request.getToken())) {
+      return TokenValidResponse.newBuilder().setValid(false).build();
+    }
+
+    var expired = tokenService.isExpired(request.getToken());
+    return TokenValidResponse.newBuilder().setValid(!expired).build();
   }
 }

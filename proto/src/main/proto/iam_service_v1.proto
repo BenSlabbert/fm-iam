@@ -14,9 +14,18 @@ service IamService {
   rpc login (LoginRequest) returns (LoginResponse) {}
   rpc refresh (RefreshRequest) returns (RefreshResponse) {}
   rpc logout (LogoutRequest) returns (LogoutResponse) {}
+  rpc token_valid (TokenValidRequest) returns (TokenValidResponse) {}
   rpc create_account (CreateAccountRequest) returns (CreateAccountResponse) {}
   rpc delete_account (DeleteAccountRequest) returns (DeleteAccountResponse) {}
   rpc lock_account (LockAccountRequest) returns (LockAccountResponse) {}
+}
+
+message TokenValidRequest {
+  string token = 1;
+}
+
+message TokenValidResponse {
+  bool valid = 1;
 }
 
 message LoginRequest {

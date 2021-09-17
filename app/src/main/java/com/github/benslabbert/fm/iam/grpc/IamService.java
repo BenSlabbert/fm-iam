@@ -14,6 +14,8 @@ import com.github.benslabbert.fm.iam.proto.service.v1.LogoutRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.LogoutResponse;
 import com.github.benslabbert.fm.iam.proto.service.v1.RefreshRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.RefreshResponse;
+import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidRequest;
+import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidResponse;
 import com.github.benslabbert.fm.iam.service.UserService;
 import io.grpc.stub.StreamObserver;
 import io.micronaut.scheduling.TaskExecutors;
@@ -46,6 +48,14 @@ public class IamService extends IamServiceGrpc.IamServiceImplBase {
   public void logout(LogoutRequest request, StreamObserver<LogoutResponse> responseObserver) {
     var ctx = CustomInterceptor.CONTEXT_KEY.get();
     var reply = userService.logout(ctx, request);
+    complete(responseObserver, reply);
+  }
+
+  @Override
+  public void tokenValid(
+      TokenValidRequest request, StreamObserver<TokenValidResponse> responseObserver) {
+    var ctx = CustomInterceptor.CONTEXT_KEY.get();
+    var reply = userService.tokenValid(ctx, request);
     complete(responseObserver, reply);
   }
 
