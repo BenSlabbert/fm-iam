@@ -1,4 +1,18 @@
-FROM azul/zulu-openjdk-alpine:11 as packager
+ARG ALPINE_IMAGE="alpine:3.14"
+
+FROM $ALPINE_IMAGE as packager
+
+ARG ZULU_JDK="zulu17.28.13-ca-jdk17.0.0-linux_musl_x64"
+
+RUN apk add curl ca-certificates binutils --no-cache
+
+RUN curl https://cdn.azul.com/zulu/bin/$ZULU_JDK.tar.gz -o $ZULU_JDK.tar.gz
+
+RUN gunzip $ZULU_JDK.tar.gz
+
+RUN tar -xvf $ZULU_JDK.tar
+
+ENV PATH "$PATH:/$ZULU_JDK/bin"
 
 RUN { \
         java --version ; \
@@ -13,25 +27,26 @@ RUN jlink \
     --verbose \
     --add-modules \
         java.base,java.sql,java.naming,java.desktop,java.management,java.security.jgss,java.instrument \
-        # java.naming - javax/naming/NamingException
-        # java.desktop - java/beans/PropertyEditorSupport
-        # java.management - javax/management/MBeanServer
-        # java.security.jgss - org/ietf/jgss/GSSException
-        # java.instrument - java/lang/instrument/IllegalClassFormatException
+#         java.naming - javax/naming/NamingException
+#         java.desktop - java/beans/PropertyEditorSupport
+#         java.management - javax/management/MBeanServer
+#         java.security.jgss - org/ietf/jgss/GSSException
+#         java.instrument - java/lang/instrument/IllegalClassFormatException
     --compress 2 \
     --strip-debug \
     --no-header-files \
     --no-man-pages \
     --output "$JAVA_MINIMAL"
 
-FROM alpine
+FROM $ALPINE_IMAGE
 
 ENV JAVA_MINIMAL=/opt/jre
 ENV PATH="$PATH:$JAVA_MINIMAL/bin"
+ENV JAVA_OPTS="-XX:+UseZGC -Xlog:gc -Xmx200m -Xms200m"
 
 COPY --from=packager "$JAVA_MINIMAL" "$JAVA_MINIMAL"
 COPY "app/target/app.jar" "/app.jar"
 
 EXPOSE 8080
-CMD [ "-jar", "/app.jar" ]
+CMD [ "-jar", "/app.jar", "$JAVA_OPTS" ]
 ENTRYPOINT [ "java" ]

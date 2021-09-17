@@ -11,7 +11,7 @@ services:
   - docker
 
 jdk:
-  - openjdk11
+  - zulu17
 
 script:
   - make
