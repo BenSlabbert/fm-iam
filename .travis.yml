@@ -3,17 +3,21 @@ dist: focal
 addons:
   apt:
     packages:
+      - curl
       - make
+      - gzip
 
 language: java
 
 services:
   - docker
 
-jdk:
-  - zulu17
-
 script:
+  - pwd
+  - curl https://cdn.azul.com/zulu/bin/zulu17.28.13-ca-jdk17.0.0-linux_x64.tar.gz -o zulu17.28.13-ca-jdk17.0.0-linux_x64.tar.gz
+  - gunzip zulu17.28.13-ca-jdk17.0.0-linux_x64.tar.gz
+  - tar -xvf zulu17.28.13-ca-jdk17.0.0-linux_x64.tar
+  - export export PATH="$PATH:/zulu17.28.13-ca-jdk17.0.0-linux_x64/bin"
   - make
 
 cache:
