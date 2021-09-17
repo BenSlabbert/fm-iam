@@ -26,6 +26,7 @@ message TokenValidRequest {
 
 message TokenValidResponse {
   bool valid = 1;
+  com.github.benslabbert.fm.iam.proto.message.v1.UserMessage user = 2;
 }
 
 message LoginRequest {

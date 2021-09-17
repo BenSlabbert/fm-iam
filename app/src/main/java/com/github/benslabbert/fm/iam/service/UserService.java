@@ -1,5 +1,7 @@
 package com.github.benslabbert.fm.iam.service;
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.benslabbert.fm.iam.dao.entity.User;
 import com.github.benslabbert.fm.iam.dao.repo.UserRepo;
 import com.github.benslabbert.fm.iam.exception.BadCredentialsException;
@@ -24,9 +26,11 @@ import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidRequest;
 import com.github.benslabbert.fm.iam.proto.service.v1.TokenValidResponse;
 import io.micronaut.core.util.StringUtils;
 import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import javax.inject.Singleton;
 import javax.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import lombok.SneakyThrows;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -35,6 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 public class UserService {
 
   private final PasswordService passwordService;
+  private final ObjectMapper objectMapper;
   private final CacheService cacheService;
   private final TokenService tokenService;
   private final UserRepo userRepo;
@@ -183,7 +188,40 @@ public class UserService {
       return TokenValidResponse.newBuilder().setValid(false).build();
     }
 
+    var token = tokenService.parse(request.getToken());
+    if (token.isEmpty()) {
+      return TokenValidResponse.newBuilder().setValid(false).build();
+    }
+
+    var user = getUser(token.get().getUserId());
+    if (user.isEmpty()) {
+      return TokenValidResponse.newBuilder().setValid(false).build();
+    }
+
     var expired = tokenService.isExpired(request.getToken());
-    return TokenValidResponse.newBuilder().setValid(!expired).build();
+    return TokenValidResponse.newBuilder()
+        .setValid(!expired)
+        .setUser(
+            UserMessage.newBuilder()
+                .setId(UUID.newBuilder().setValue(token.get().getUserId()).build())
+                .setName(user.get().getName())
+                .build())
+        .build();
+  }
+
+  @SneakyThrows
+  private Optional<User> getUser(String id) {
+    var userAsBytes = cacheService.get(id);
+    if (userAsBytes.isEmpty()) {
+      var opt = userRepo.findById(java.util.UUID.fromString(id));
+      if (opt.isEmpty()) {
+        return opt;
+      }
+
+      cacheService.put(id, objectMapper.writeValueAsBytes(opt.get()));
+      return opt;
+    }
+
+    return Optional.of(objectMapper.readValue(userAsBytes.get(), new TypeReference<>() {}));
   }
 }
