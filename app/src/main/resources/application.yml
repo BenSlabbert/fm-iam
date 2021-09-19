@@ -35,3 +35,10 @@ flyway:
   datasources:
     default:
       enabled: true
+
+jwt:
+  secret: "secretsecretsecretsecretsecretsecretsecretsecret"
+  token:
+    lifetime: 30
+  refresh_token:
+    lifetime: 300

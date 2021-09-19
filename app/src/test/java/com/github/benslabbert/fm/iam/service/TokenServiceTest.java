@@ -2,6 +2,7 @@ package com.github.benslabbert.fm.iam.service;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.benslabbert.fm.iam.config.JwtConfig;
 import com.nimbusds.jose.KeyLengthException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -12,7 +13,7 @@ class TokenServiceTest {
 
   @BeforeEach
   void before() throws KeyLengthException {
-    service = new TokenService();
+    service = new TokenService(JwtConfig.ofDefaults());
   }
 
   @Test
